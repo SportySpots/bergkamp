@@ -46,14 +46,31 @@ const makeConnection = (wsServer) => new Promise((resolve, reject) => {
     // This is the most important callback for us, we'll handle
     // all message here.
     connection.on('message', function (message) {
+      // console.log(message);
+
       if (message.type === 'utf8') {
-        console.log(JSON.parse(message.utf8Data));
+        // console.log(JSON.parse(message.utf8Data));
         // process WebSocket message
       }
     });
 
     connection.on('close', function (connection) {
     });
+
+    connection.cmd = async cmd => {
+      // send and get response back
+      connection.sendUTF(cmd);
+      return new Promise((resolve, reject) => {
+        connection.once('message', function (message) {
+          const parsedMessage = JSON.parse(message.utf8Data);
+          if (!parsedMessage.hasError) {
+            resolve(parsedMessage.response);
+          } else {
+            reject('Cruijff: ' + parsedMessage.error);
+          }
+        });
+      });
+    };
 
     resolve(connection);
   });

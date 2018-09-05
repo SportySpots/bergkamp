@@ -1,4 +1,4 @@
-const { Python } = require('./python');
+const { Python } = require('../python');
 
 class Seedorf {
   constructor(path) {
