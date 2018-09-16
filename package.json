@@ -10,7 +10,25 @@
   "license": "ISC",
   "dependencies": {
     "adbkit": "^2.11.0",
+    "detox": "^9.0.1",
     "jest": "^23.5.0",
     "websocket": "^1.0.26"
+  },
+  "detox": {
+    "configurations": {
+      "android.emu.debug": {
+        "binaryPath": "../cruijff/android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+        "type": "android.emulator",
+        "name": "Nexus_5_API_27"
+      },
+      "android.emu.release": {
+        "binaryPath": "../cruijff/android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
+        "type": "android.emulator",
+        "name": "Nexus_5X_API_27"
+      }
+    },
+    "test-runner": "jest"
   }
 }

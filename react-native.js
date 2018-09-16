@@ -1,48 +1,40 @@
-const util = require('util');
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 
-// var adb = require('adbkit');
-// var client = adb.createClient()
+const singleton = {
+  httpServer: null,
+  wsServer: null,
+  connection: null,
+};
 
-// client.listDevices()
-//   .then(function(devices) {
-//     console.log(devices);
-//   })
-//   .catch(function(err) {
-//     console.error('Something went wrong:', err.stack)
-//   })
-//
-//
-
-const startServer = () => {
-  const httpServer = http.createServer(function (request, response) {
+const startServer = () => new Promise((resolve, reject) => {
+  let httpServer = singleton.httpServer = http.createServer(function (request, response) {
     // process HTTP request. Since we're writing just WebSockets
     // server we don't have to implement anything.
   });
 
-  /* port 8020 is hardwired into the cruijff testing apk
+  /* port 8020 is hardwired into the cruijff testing image
    * as well as server address 10.0.2.2 */
   httpServer.listen(8020, function () {
-
+    // resolve();
   });
 
   // create the server
-  const wsServer = new WebSocketServer({
-    httpServer: httpServer
+  let wsServer = singleton.wsServer = new WebSocketServer({
+    httpServer: singleton.httpServer
   });
 
 
-  const connection = null;
+  let connection = singleton.connection = null;
 
   // WebSocket server
   return { httpServer, wsServer, connection };
-};
+});
 
-const makeConnection = (wsServer) => new Promise((resolve, reject) => {
+const makeConnection = (wsServer = singleton.wsServer) => new Promise((resolve, reject) => {
   wsServer.on('request', function (request) {
-    const connection = request.accept(null, request.origin);
-
+    let connection = singleton.connection = request.accept(null, request.origin);
+    // console.log('incoming connection from react-native');
     // This is the most important callback for us, we'll handle
     // all message here.
     connection.on('message', function (message) {
@@ -76,4 +68,4 @@ const makeConnection = (wsServer) => new Promise((resolve, reject) => {
   });
 });
 
-module.exports = { makeConnection, startServer };
+module.exports = { makeConnection, startServer, singleton };
