@@ -1,26 +1,31 @@
 const detox = require('detox');
 const config = require('../package.json').detox;
 const adapter = require('detox/runners/jest/adapter');
+const wait = require('../utils').wait;
 
-const { startServer, connection, singleton } = require('../react-native');
+const { startServer, closeConnection, singleton } = require('../react-native');
 
-jest.setTimeout(5000);
+jest.setTimeout(120000);
 jasmine.getEnv().addReporter(adapter);
 
 beforeAll(async () => {
-  await detox.init(config);
   startServer();
+  await detox.init(config);
 });
 
 beforeEach(async () => {
   await adapter.beforeEach();
 });
 
+afterEach(async () => {
+  // closeConnection();
+});
+
 afterAll(async () => {
   await adapter.afterAll();
   await detox.cleanup();
-  const { connection, wsServer, httpServer } = singleton;
-  if (connection) connection.close();
+  const { wsServer, httpServer } = singleton;
+  closeConnection();
   if (wsServer) {
     wsServer.unmount();
     wsServer.closeAllConnections();
@@ -28,4 +33,5 @@ afterAll(async () => {
   if (httpServer) {
     httpServer.close();
   }
+  await wait(1000);
 });

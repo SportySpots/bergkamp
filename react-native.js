@@ -7,17 +7,17 @@ const singleton = {
   connection: null,
 };
 
-const startServer = () => new Promise((resolve, reject) => {
-  let httpServer = singleton.httpServer = http.createServer(function (request, response) {
-    // process HTTP request. Since we're writing just WebSockets
-    // server we don't have to implement anything.
-  });
-
+const startServer = () => {
+  console.log('starting server');
+  let httpServer = singleton.httpServer = http.createServer(function (request, response) {});
+  httpServer.listen(8020, function () {});
   /* port 8020 is hardwired into the cruijff testing image
    * as well as server address 10.0.2.2 */
-  httpServer.listen(8020, function () {
-    // resolve();
-  });
+
+  // httpServer.on('connection', function (socket) {
+  //   socket.destroy();
+  // });
+
 
   // create the server
   let wsServer = singleton.wsServer = new WebSocketServer({
@@ -27,12 +27,15 @@ const startServer = () => new Promise((resolve, reject) => {
 
   let connection = singleton.connection = null;
 
-  // WebSocket server
-  return { httpServer, wsServer, connection };
-});
 
-const makeConnection = (wsServer = singleton.wsServer) => new Promise((resolve, reject) => {
+
+
+
+
+
+
   wsServer.on('request', function (request) {
+    closeConnection();
     let connection = singleton.connection = request.accept(null, request.origin);
     // console.log('incoming connection from react-native');
     // This is the most important callback for us, we'll handle
@@ -63,9 +66,22 @@ const makeConnection = (wsServer = singleton.wsServer) => new Promise((resolve, 
         });
       });
     };
-
-    resolve(connection);
   });
-});
 
-module.exports = { makeConnection, startServer, singleton };
+
+
+  // WebSocket server
+  return {httpServer, wsServer, connection};
+
+
+};
+
+const closeConnection = () => {
+  if (singleton.connection) {
+    singleton.connection.closeTimeout = 1;
+    singleton.connection.close();
+    singleton.connection = null;
+  }
+};
+
+module.exports = { startServer, closeConnection, singleton };
