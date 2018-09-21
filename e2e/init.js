@@ -1,12 +1,12 @@
 const detox = require('detox');
-const config = require('../package.json').detox;
 const adapter = require('detox/runners/jest/adapter');
 const wait = require('../utils').wait;
-
+const config = require('../package.json').detox;
 const { startServer, closeConnection, singleton } = require('../react-native');
 
 jest.setTimeout(120000);
 jasmine.getEnv().addReporter(adapter);
+jestExpect = expect;
 
 beforeAll(async () => {
   startServer();

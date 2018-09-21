@@ -1,5 +1,6 @@
 const Seedorf = require('../seedorf/seedorf').Seedorf;
 const scripts = require('../seedorf/scripts');
+const config = require('../config');
 
 const enterEmailAndPassword = async (email, password) => {
   await element(by.id('loginInputEmail')).tap();
@@ -11,8 +12,9 @@ const enterEmailAndPassword = async (email, password) => {
 
 describe('Login', () => {
   beforeAll(async () => {
-    const seedorf = new Seedorf('/home/tom/Projects/sportyspots/seedorf');
-    console.log(await seedorf.script(scripts.CREATE_TEST_USER));
+    const seedorf = new Seedorf(config.seedorfPath);
+    await seedorf.script(scripts.FLUSH_DB);
+    await seedorf.script(scripts.CREATE_TEST_USER);
   });
 
   beforeEach(async () => {
@@ -35,8 +37,6 @@ describe('Login', () => {
     await expect(element(by.id('splashText'))).toBeVisible();
     await expect(element(by.id('splashLoginButton'))).toNotExist();
   });
-
-
 
 });
 

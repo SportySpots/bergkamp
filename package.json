@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config=./jest.config.js"
+    "test": "configuration='android.emu.debug' node_modules/.bin/jest e2e --config=e2e/config.json --maxWorkers=1 '--testNamePattern=^((?!:ios:).)*$'",
+    "testArtifacts": "takeScreenshots='all' artifactsLocation='artifacts' yarn test",
+    "feh": "feh -F -rt -E 300 -y 500 -W 2000 artifacts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "adbkit": "^2.11.0",
     "detox": "^9.0.1",
     "jest": "^23.5.0",
     "websocket": "^1.0.26"
