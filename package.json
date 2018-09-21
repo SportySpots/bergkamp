@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "configuration='android.emu.debug' node_modules/.bin/jest e2e --config=e2e/config.json --maxWorkers=1 '--testNamePattern=^((?!:ios:).)*$'",
+    "test": "configuration='android.emu.debug' node_modules/.bin/jest e2e --config=e2e/config.json --maxWorkers=1 '--testNamePattern=^games((?!:ios:).)*$'",
     "testArtifacts": "takeScreenshots='all' artifactsLocation='artifacts' yarn test",
     "feh": "feh -F -rt -E 300 -y 500 -W 2000 artifacts"
   },
