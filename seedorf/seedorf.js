@@ -15,7 +15,9 @@ class Seedorf {
     return this.python.cmd(c);
   }
   script(c) {
-    return Python.script(c, 'python ' + this.path + '/manage.py shell');
+    return Python.script(c, 'python ' + this.path + '/manage.py shell').catch(e => {
+      throw new Error(e.message + c);
+    });
   }
 
 }

@@ -8,20 +8,20 @@ describe('Splash: First run', () => {
     await element(by.id('start')).tap();
   });
 
-  // for (let i = 1; i <= 2; i++) {
-  //   it(`should go next onboarding screen after tap (${i})`, async () => {
-  //     await element(by.id('footerNextButton')).tap();
-  //     await expect(element(by.id('footerNextButton'))).toBeVisible();
-  //   });
-  // }
-  // it ('should go to SpotsListScreen after onboarding', async() => {
-  //   await element(by.id('footerNextButton')).tap();
-  //   await expect(element(by.id('SpotsListScreen'))).toBeVisible();
-  // });
+  for (let i = 1; i <= 2; i++) {
+    it(`should go next onboarding screen after tap (${i})`, async () => {
+      await element(by.id('footerNextButton')).tap();
+      await expect(element(by.id('footerNextButton'))).toBeVisible();
+    });
+  }
+  it ('should go to SpotsListScreen after onboarding', async() => {
+    await element(by.id('footerNextButton')).tap();
+    await expect(element(by.id('SpotsListScreen'))).toBeVisible();
+  });
 
 });
 
-describe.skip('SplashScreen', () => {
+describe('SplashScreen', () => {
   beforeEach(async () => {
     await device.reloadReactNative();
   });
