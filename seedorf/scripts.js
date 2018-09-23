@@ -23,6 +23,29 @@ GameFactory.create(
   is_listed=True,
   is_shareable=True
 ).save()
-  `
+  `,
 
+  CREATE_CANCELABLE_GAME: `
+from seedorf.users.models import User
+from seedorf.games.tests.factories import GameListedFactory
+test_user = User.objects.first()
+game = GameListedFactory.create(
+  status='planned',
+  organizer=test_user
+).save()
+  `,
+
+  GET_JWT: `
+from rest_framework_jwt.settings import api_settings
+from seedorf.users.models import User
+
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+test_user = User.objects.first()
+
+payload = jwt_payload_handler(test_user)
+token = jwt_encode_handler(payload)
+print(token)
+`
 };

@@ -10,6 +10,8 @@ const enterEmailAndPassword = async (email, password) => {
   await element(by.id('loginSubmitButton')).tap();
 };
 
+
+
 describe('Login', () => {
   beforeAll(async () => {
     const seedorf = new Seedorf(config.seedorfPath);
