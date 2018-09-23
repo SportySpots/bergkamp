@@ -10,7 +10,6 @@ describe('CancelGame', () => {
   let gamesData;
   let seedorf;
   beforeAll(async () => {
-    await device.reloadReactNative();
     seedorf = new Seedorf(config.seedorfPath);
     await seedorf.script(scripts.FLUSH_DB);
     await seedorf.script(scripts.CREATE_TEST_USER);
