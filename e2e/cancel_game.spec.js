@@ -30,7 +30,7 @@ describe('CancelGame', () => {
   });
 
   it('can tap cancel button in menu', async () => {
-    await element(by.id('gameAdminMenuCancel')).tap();
+    await element(by.text('Annuleer activiteit')).tap();
   });
 
   it('can press Cancel button', async() => {
