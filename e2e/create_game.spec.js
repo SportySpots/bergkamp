@@ -47,9 +47,9 @@ describe('CreateGame', () => {
 
   it('can pick a duration', async () => {
     await element(by.id('pickDuration')).tap();
-    await element(by.text('3 uur')).tap();
+    await element(by.text('2 uur')).tap();
     const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
-    jestExpect(state.duration).toBe(180);
+    jestExpect(state.duration).toBe(120);
     await wait(1000);
   });
 
@@ -71,6 +71,7 @@ describe('CreateGame', () => {
 
   it('can pick a spot', async () => {
     await element(by.id('pickSpot_0')).atIndex(1).tap();
+    await element(by.id('pickSpot_0')).atIndex(0).tap();
     const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
     jestExpect(state).toHaveProperty('spot.uuid');
     jestExpect(state).toHaveProperty('spot.name');
