@@ -14,14 +14,15 @@ describe('CreateGame', () => {
     await seedorf.script(scripts.CREATE_TEST_USER);
     await seedorf.script(scripts.CREATE_TEST_SPOT);
     await quickLogin();
-    await element(by.id('start')).tap();
+    await device.setLocation(52.379189, 4.899431);
+    // await element(by.id('start')).tap();
     await element(by.id('navbarButton_organize')).tap();
   });
 
   it('can pick a sport', async () => {
     await element(by.id('pickSport')).tap();
     await element(by.id('sport_0')).tap();
-    const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
+    const state = await singleton.connection.cmd('refs["PlanGameForm"].state');
     jestExpect(state).toHaveProperty('sport.uuid');
     jestExpect(state).toHaveProperty('sport.name');
   });
@@ -32,7 +33,7 @@ describe('CreateGame', () => {
     await element(by.id('pickDate')).tap();
     await element(by.text(''+currentDay)).tap();
     await element(by.text('Ok')).tap();
-    const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
+    const state = await singleton.connection.cmd('refs["PlanGameForm"].state');
     jestExpect(state).toHaveProperty('date.year', currentDate.getFullYear());
     jestExpect(state).toHaveProperty('date.month', currentDate.getMonth()+1);
     jestExpect(state).toHaveProperty('date.day', currentDay);
@@ -41,15 +42,15 @@ describe('CreateGame', () => {
   it('can pick a time', async () => {
     await element(by.id('pickTime')).tap();
     await element(by.text('OK')).tap();
-    const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
+    const state = await singleton.connection.cmd('refs["PlanGameForm"].state');
     jestExpect(state.time).not.toBeNull();
   });
 
   it('can pick a duration', async () => {
     await element(by.id('pickDuration')).tap();
-    await element(by.text('2 uur')).tap();
-    const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
-    jestExpect(state.duration).toBe(120);
+    await element(by.text('75 minuten')).tap();
+    const state = await singleton.connection.cmd('refs["PlanGameForm"].state');
+    jestExpect(state.duration).toBe(75);
     await wait(1000);
   });
 
@@ -61,7 +62,7 @@ describe('CreateGame', () => {
     await element(by.id('capacityPlus')).tap();
     await element(by.id('capacityMinus')).tap();
     await element(by.text('Ok')).tap();
-    const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
+    const state = await singleton.connection.cmd('refs["PlanGameForm"].state');
     jestExpect(state.capacity).toBe(6);
   });
 
@@ -72,20 +73,20 @@ describe('CreateGame', () => {
   it('can pick a spot', async () => {
     await element(by.id('pickSpot_0')).atIndex(1).tap();
     await element(by.id('pickSpot_0')).atIndex(0).tap();
-    const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
+    const state = await singleton.connection.cmd('refs["PlanGameForm"].state');
     jestExpect(state).toHaveProperty('spot.uuid');
     jestExpect(state).toHaveProperty('spot.name');
   });
 
-  it('can go to next screen', async () => {
-    await element(by.id('footerNextButton')).tap();
-  });
+  // it('can go to next screen', async () => {
+  //   await element(by.id('footerNextButton')).tap();
+  // });
 
   it('can type description', async () => {
     const description = 'Some short description\n';
     await element(by.id('description')).typeText(description);
     await element(by.id('footerNextButton')).tap();
-    const state = await singleton.connection.cmd('refs["PlanGameScreen"].state');
+    const state = await singleton.connection.cmd('refs["PlanGameForm"].state');
     console.log(state);
     jestExpect(state.description).toBe(description);
   });

@@ -30,14 +30,13 @@ describe('Login', () => {
 
   it('should show login Error on error', async () => {
     await enterEmailAndPassword('tom@sportyspots.com', 'password123');
-    await expect(element(by.id('loginErrorText'))).toBeVisible();
+    await expect(element(by.text('Geen geldige e-mail of wachtwoord'))).toBeVisible();
   });
 
   it('should login on correct login', async () => {
     await enterEmailAndPassword('test@sportyspots.com', 'test123test');
-    await expect(element(by.id('loginErrorText'))).toNotExist();
-    await expect(element(by.id('splashText'))).toBeVisible();
-    await expect(element(by.id('splashLoginButton'))).toNotExist();
+    await expect(element(by.text('Geen geldige e-mail of wachtwoord'))).toNotExist();
+    await expect(element(by.id('SpotsListScreen'))).toBeVisible();
   });
 
 });

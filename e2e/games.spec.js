@@ -36,8 +36,8 @@ describe('GamesList', () => {
   });
 
   it('shows the correct tapped game', async () => {
-    const gameProps = await singleton.connection.cmd('refs["gameDetails"].props');
-    jestExpect(gameProps.game.uuid).toBe(gamesData[0].uuid);
+    const gameData = await singleton.connection.cmd('refs["gameData"]');
+    jestExpect(gameData.uuid).toBe(gamesData[0].uuid);
   });
 
 });

@@ -37,7 +37,7 @@ describe('Signup', () => {
     await element(by.id('signupScrollView')).scrollTo('bottom');
     await element(by.id('signupButtonSubmit')).tap();
 
-    await expect(element(by.id('passwordError'))).toBeVisible();
+    await expect(element(by.text('Password needs to be at least 8 characters'))).toBeVisible();
   });
 
   it('shows error on wrong email', async () => {
@@ -46,7 +46,7 @@ describe('Signup', () => {
     await element(by.id('signupScrollView')).scrollTo('bottom');
     await element(by.id('signupButtonSubmit')).tap();
 
-    await expect(element(by.id('emailError'))).toBeVisible();
+    await expect(element(by.text('Please, provide a valid email address!'))).toBeVisible();
   });
 
   it('should go to profile details after succesful signup', async () => {
@@ -73,7 +73,7 @@ assert user.last_name == 'User'
     await enterDetails('Test', 'User', 'test@sportyspots.com', 'test123test');
     await element(by.id('signupScrollView')).scrollTo('bottom');
     await element(by.id('signupButtonSubmit')).tap();
-    await expect(element(by.id('emailError'))).toBeVisible();
+    await expect(element(by.text('E-mail address in use'))).toBeVisible();
   });
 });
 

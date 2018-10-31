@@ -15,7 +15,6 @@ describe('CancelGame', () => {
     await seedorf.script(scripts.CREATE_TEST_USER);
     await seedorf.script(scripts.CREATE_CANCELABLE_GAME);
     await quickLogin();
-    await element(by.id('start')).tap();
     await element(by.id('navbarButton_join')).tap();
     gamesData = await singleton.connection.cmd('refs["gamesFlatList"].props.data');
     await element(by.id('game_'+gamesData[0].uuid)).tap();
